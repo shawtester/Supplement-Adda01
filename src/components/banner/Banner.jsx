@@ -8,42 +8,42 @@ const products = [
     
       
     {
-      id: 2,
+      id: 21,
       image: "https://assets.hyugalife.com/banner/feature/ForLeanMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
       
     },
     {
-      id: 3,
+      id: 31,
       image: "https://assets.hyugalife.com/banner/feature/Asset_1_1_.png?compress=true&format=webp&q=75&w=260",
       
     },
     {
-      id: 4,
+      id: 41,
       image: "https://assets.hyugalife.com/banner/feature/ForAthleticMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
       
     },
     {
-      id: 5,
+      id: 51,
       image: "https://assets.hyugalife.com/banner/feature/LactoseIntolerance-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
     
     },
     {
-      id: 6,
+      id: 61,
       image: "https://assets.hyugalife.com/banner/feature/ForBeginner-TEP-260x340_1_.png?compress=true&format=webp&q=75&w=260",
       
     },
     {
-        id: 2,
+        id: 29,
         image: "https://assets.hyugalife.com/catalog/product/h/s/hsjt16l1_12_.jpg?compress=true&format=webp&q=75&w=300&h=300",
         
       },
       {
-        id: 3,
+        id: 32,
         image: "https://assets.hyugalife.com/catalog/product/f/o/fop_no_shadow_uf_1kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
         
       },
       {
-        id: 4,
+        id: 42,
         image: "https://assets.hyugalife.com/catalog/product/6/1/61lfd8xjpul._sl1500_.jpg?compress=true&format=webp&q=75&w=300&h=300",
         
       },
