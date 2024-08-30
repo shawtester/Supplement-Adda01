@@ -1,78 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useSwipeable } from "react-swipeable";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Importing icons for buttons
+import myContext from '../../context/data/myContext'
 
 const products = [
-  // Your product objects here
-  
+    // Your product objects here
     
-  {
-    id: 1,
-    image: "https://assets.hyugalife.com/catalog/product/h/s/hsjt16l1_12_.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    title: "Product 1",
-    price: "$15.00",
-    description: "This is a brief description of Product 2."
-  },
-  {
-    id: 2,
-    image: "https://assets.hyugalife.com/catalog/product/f/o/fop_no_shadow_uf_1kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    title: "Product 2",
-    price: "$20.00",
-    description: "This is a brief description of Product 3."
-  },
-  {
-    id: 3,
-    image: "https://assets.hyugalife.com/catalog/product/6/1/61lfd8xjpul._sl1500_.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    title: "Product 3",
-    price: "$25.00",
-    description: "This is a brief description of Product 4."
-  },
-  {
-    id: 4,
-    image: "https://assets.hyugalife.com/catalog/product/9/0/90200188-1.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    title: "Product 4",
-    price: "$30.00",
-    description: "This is a brief description of Product 5."
-  },
-  {
-    id: 5,
-    image: "https://assets.hyugalife.com/catalog/product/f/o/fop_mk_2kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    title: "Product 5",
-    price: "$35.00",
-    description: "This is a brief description of Product 6."
-  },
-  {
+      
+    {
+      id: 2,
+      image: "https://assets.hyugalife.com/banner/feature/ForLeanMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
+      
+    },
+    {
+      id: 3,
+      image: "https://assets.hyugalife.com/banner/feature/Asset_1_1_.png?compress=true&format=webp&q=75&w=260",
+      
+    },
+    {
+      id: 4,
+      image: "https://assets.hyugalife.com/banner/feature/ForAthleticMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
+      
+    },
+    {
+      id: 5,
+      image: "https://assets.hyugalife.com/banner/feature/LactoseIntolerance-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
+    
+    },
+    {
       id: 6,
-      image: "https://assets.hyugalife.com/catalog/product/h/s/hsjt16l1_12_.jpg?compress=true&format=webp&q=75&w=300&h=300",
-      title: "Product 6",
-      price: "$15.00",
-      description: "This is a brief description of Product 2."
+      image: "https://assets.hyugalife.com/banner/feature/ForBeginner-TEP-260x340_1_.png?compress=true&format=webp&q=75&w=260",
+      
     },
     {
-      id: 7,
-      image: "https://assets.hyugalife.com/catalog/product/f/o/fop_no_shadow_uf_1kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-      title: "Product 7",
-      price: "$20.00",
-      description: "This is a brief description of Product 3."
-    },
-    {
-      id: 8,
-      image: "https://assets.hyugalife.com/catalog/product/6/1/61lfd8xjpul._sl1500_.jpg?compress=true&format=webp&q=75&w=300&h=300",
-      title: "Product 8",
-      price: "$25.00",
-      description: "This is a brief description of Product 4."
-    },
-    {
-      id: 9,
-      image: "https://assets.hyugalife.com/catalog/product/h/s/hsvo17d5-1_1_11zon.jpg?compress=true&format=webp&q=75&w=300&h=300",
-      title: "Product 9",
-      price: "$30.00",
-      description: "This is a brief description of Product 5."
-    },
-    
-];
-
-
+        id: 2,
+        image: "https://assets.hyugalife.com/catalog/product/h/s/hsjt16l1_12_.jpg?compress=true&format=webp&q=75&w=300&h=300",
+        
+      },
+      {
+        id: 3,
+        image: "https://assets.hyugalife.com/catalog/product/f/o/fop_no_shadow_uf_1kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
+        
+      },
+      {
+        id: 4,
+        image: "https://assets.hyugalife.com/catalog/product/6/1/61lfd8xjpul._sl1500_.jpg?compress=true&format=webp&q=75&w=300&h=300",
+        
+      },
+      
+  ];
+  
+  
 const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(4);
@@ -95,13 +73,13 @@ const Slider = () => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === products.length - itemsToShow ? 0 : prevIndex + 1
+      prevIndex === Math.ceil(products.length / itemsToShow) - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? products.length - itemsToShow : prevIndex - 1
+      prevIndex === 0 ? Math.ceil(products.length / itemsToShow) - 1 : prevIndex - 1
     );
   };
 
@@ -114,8 +92,13 @@ const Slider = () => {
     trackMouse: true,
   });
 
+  const context = useContext(myContext)
+    const { mode } = context
+
   return (
-    <div {...handlers} className="bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 py-8">
+    <div {...handlers} className="via-red-500 to-pink-500 py-8">
+         <h1 className='  text-3xl font-bold text-black ml-9' style={{color: mode === 'dark' ? 'white' : ''}}>Proteins Tailored to Your Goals</h1>
+        
       <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
         <div className="relative w-full">
           <div
@@ -143,11 +126,7 @@ const Slider = () => {
                     <p className="text-gray-500">{product.price}</p>
                     <p className="text-gray-700 text-sm mt-2">{product.description}</p>
                   </div>
-                  <div className="p-4">
-                    <button className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                      Add to Cart
-                    </button>
-                  </div>
+                
                 </div>
               </div>
             ))}
