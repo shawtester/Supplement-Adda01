@@ -7,21 +7,7 @@ const products = [
     // Your product objects here
     
       
-    {
-      id: 21,
-      image: "https://assets.hyugalife.com/banner/feature/ForLeanMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
-      
-    },
-    {
-      id: 31,
-      image: "https://assets.hyugalife.com/banner/feature/Asset_1_1_.png?compress=true&format=webp&q=75&w=260",
-      
-    },
-    {
-      id: 41,
-      image: "https://assets.hyugalife.com/banner/feature/ForAthleticMuscle-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",
-      
-    },
+  
     {
       id: 51,
       image: "https://assets.hyugalife.com/banner/feature/LactoseIntolerance-TEP-260x340_2_.png?compress=true&format=webp&q=75&w=260",

@@ -13,6 +13,14 @@ import Mystate from "./context/data/myState";
 import Login from './pages/registration/Login';
 import Signup from './pages/registration/Signup';
 import Productinfo from './pages/productinfo/Productinfo';
+import Model from './components/model/Model'
+import AddProduct from './pages/admin/page/Addproduct';
+import UpdateProduct from './pages/admin/page/Updateproduct';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import OtpVerification from './components/otpverify/OtpVerification';
+
+
 
 
 const App = () => {
@@ -30,8 +38,15 @@ const App = () => {
         <Route path="/*" element={<Nopage/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path='/otpverify' element={<OtpVerification/>}/>
         <Route path='/productinfo/:id' element={<Productinfo/>}/>
+        <Route path='/model' element={<Model/>}/>
+        <Route path="/addproduct" element={<AddProduct/>} />
+        <Route path="/updateproduct" element={<UpdateProduct/>} />
+       
       </Routes>
+      <ToastContainer/>
+   
     </Router>
     </Mystate>
     
