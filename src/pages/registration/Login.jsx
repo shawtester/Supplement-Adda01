@@ -1,60 +1,117 @@
-// src/LoginPage.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import myContext from '../../context/data/myContext';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/FirebaseConfig';
+import { toast } from 'react-toastify';
+import Loader from '../../components/loader/Loader';
 
-const LoginPage = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-400 via-red-500 to-pink-500">
-      <div className="w-full max-w-md bg-black text-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+function Login() {
+    const context = useContext(myContext);
+    const { loading, setLoading } = context;
 
-        <form>
-          {/* Username Input */}
-          <div className="mb-4">
-            <label className="block text-gray-300 text-sm font-semibold mb-2" htmlFor="username">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-white"
-              placeholder="Enter your username"
-            />
-          </div>
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-          {/* Password Input */}
-          <div className="mb-6">
-            <label className="block text-gray-300 text-sm font-semibold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-white"
-              placeholder="Enter your password"
-            />
-          </div>
+    const navigate = useNavigate();
 
-          {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Login
-          </button>
-        </form>
+    const login = async () => {
+        setLoading(true);
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            toast.success("Login successful", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            localStorage.setItem('user', JSON.stringify(result));
+            navigate('/');
+            setLoading(false);
+        } catch (error) {
+            console.log("Error Code:", error.code); // Log the error code to see what's happening
+            setLoading(false); // Ensure loading is stopped
 
-        {/* Don't have an account? */}
-        <p className="text-center text-gray-400 mt-4">
-          Don't have an account?{' '}
-          <Link to="/Signup" className="text-blue-400 hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
-};
+            if (error.code === 'auth/wrong-password') {
+                toast.error("Incorrect password. Please try again.", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            } else if (error.code === 'auth/user-not-found') {
+                toast.error("No account found with this email.", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            } else {
+                toast.error("Please enter correct credentials.", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            }
+        }
+    };
 
-export default LoginPage;
-``
+    return (
+        <div className='flex justify-center items-center h-screen'>
+            {loading && <Loader />}
+            <div className='bg-gray-800 px-10 py-10 rounded-xl'>
+                <div className="">
+                    <h1 className='text-center text-white text-xl mb-4 font-bold'>Login</h1>
+                </div>
+                <div>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        name='email'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        placeholder='Email'
+                    />
+                </div>
+                <div>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        placeholder='Password'
+                    />
+                </div>
+                <div className='flex justify-center mb-3'>
+                    <button
+                        onClick={login}
+                        className='bg-yellow-500 w-full text-black font-bold px-2 py-2 rounded-lg'>
+                        Login
+                    </button>
+                </div>
+                <div>
+                    <h2 className='text-white'>Don't have an account? <Link className='text-yellow-500 font-bold' to={'/signup'}>Signup</Link></h2>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Login;
