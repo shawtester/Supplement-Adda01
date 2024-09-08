@@ -27,6 +27,8 @@ import CategoryPage from './pages/category/CategoryPage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import  Search from './pages/search/Search';
 
+import VerticalCategoryPage from './pages/category/VerticalCategoryPage'
+
 
 
 
@@ -58,6 +60,7 @@ const App = () => {
         
         <Route path='/productinfo/:id' element={<Productinfo/>}/>
         <Route path='/model' element={<Model/>}/>
+       
         <Route path="/addproduct" element={
             <ProtectedRoutesForAdmin><AddProduct /></ProtectedRoutesForAdmin>} />
      <Route path="/updateproduct" element={
@@ -65,12 +68,14 @@ const App = () => {
 
 
 
-
+<Route path="/product/:id" element={<Productinfo />} />
 <Route path="/category/:categoryName" element={<CategoryPage />} />
-<Route path="/category/:categoryName" element={<ProductCart />} />
+<Route path="/category/:categoryName/vertical" element={<VerticalCategoryPage />} />
+
+<Route path="/category/:categoryName/products" element={<ProductCart />} />
 <Route path='/search' element={<Search/>}/>
 
-<Route path="/product/:id" element={<Productinfo />} />
+
        
       </Routes>
       <ToastContainer/>

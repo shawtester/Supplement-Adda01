@@ -1,0 +1,33 @@
+/* Vertical list container */
+.vertical-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+  }
+  
+  /* Style for individual items */
+  .vertical-list .block {
+    width: 100%; /* Full width of the parent container */
+    max-width: 400px; /* Optional: limit the width */
+  }
+  
+  /* Optional: Style for the card content */
+  .vertical-list .bg-white {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .vertical-list img {
+    width: 100%; /* Full width of the card */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .vertical-list .p-4 {
+    padding: 1rem; /* Space around the content */
+  }
+  
+  .vertical-list .text-center {
+    text-align: center;
+  }
+  

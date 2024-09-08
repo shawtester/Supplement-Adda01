@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import './Carousel.css'; // Custom CSS file
+import './Small.css'; // Custom CSS file
 
 const Carousel = () => {
   const images = [

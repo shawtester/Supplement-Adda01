@@ -1,12 +1,11 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, increaseQuantity, decreaseQuantity } from '../../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ProductCard = lazy(() => import('./Speed'));
@@ -18,6 +17,10 @@ const ProductCart = ({ category }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Access cart items from Redux store
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  // Fetch products based on category
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -27,7 +30,7 @@ const ProductCart = ({ category }) => {
       const querySnapshot = await getDocs(productQuery);
       const allProducts = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setProducts(allProducts);
     } catch (error) {
@@ -43,15 +46,29 @@ const ProductCart = ({ category }) => {
   }, [category]);
 
   const handleAddToCart = (product) => {
-    const productToAdd = {
-      ...product,
-      quantity: 1, // Set default quantity to 1
-    };
-    dispatch(addToCart(productToAdd));
+    const existingItem = cartItems.find(item => item.id === product.id);
+
+    if (existingItem) {
+      dispatch(increaseQuantity(product.id)); // Increase quantity if item is already in the cart
+    } else {
+      const productToAdd = {
+        ...product,
+        quantity: 1,
+      };
+      dispatch(addToCart(productToAdd)); // Add new item to the cart
+    }
+  };
+
+  const handleIncreaseQuantity = (productId) => {
+    dispatch(increaseQuantity(productId));
+  };
+
+  const handleDecreaseQuantity = (productId) => {
+    dispatch(decreaseQuantity(productId));
   };
 
   const handleProductClick = (id) => {
-    navigate(`/product/${id}`);  // Navigate to the product info page
+    navigate(`/product/${id}`);
   };
 
   return (
@@ -69,11 +86,10 @@ const ProductCart = ({ category }) => {
         </div>
       )}
       {error && <p>{error}</p>}
+      
       <Suspense fallback={<div>Loading...</div>}>
         <Swiper
           spaceBetween={20}
-          navigation
-          modules={[Navigation]}
           breakpoints={{
             320: { slidesPerView: 1.5, spaceBetween: 10 },
             640: { slidesPerView: 2, spaceBetween: 20 },
@@ -84,19 +100,44 @@ const ProductCart = ({ category }) => {
           className="mySwiper relative"
         >
           {products.length > 0 ? (
-            products.map((product, index) => (
-              <SwiperSlide key={index} className="relative">
-                <div onClick={() => handleProductClick(product.id)}>
-                  <ProductCard product={product} />
-                </div>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="bg-blue-500 text-white p-2 rounded-lg mt-4 hover:bg-blue-600"
-                >
-                  Add to Cart
-                </button>
-              </SwiperSlide>
-            ))
+            products.map((product, index) => {
+              const cartItem = cartItems.find(item => item.id === product.id); // Check if product is already in cart
+
+              return (
+                <SwiperSlide key={index} className="relative">
+                  <div onClick={() => handleProductClick(product.id)}>
+                    <ProductCard product={product} />
+                  </div>
+                  
+                  <div className="mt-4 flex flex-col items-center space-y-2">
+                    {cartItem ? (
+                      <div className="flex items-center">
+                        <button
+                          className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none"
+                          onClick={() => handleDecreaseQuantity(product.id)} // Decrease quantity
+                        >
+                          -
+                        </button>
+                        <span className="mx-2">{cartItem.quantity}</span> {/* Show current quantity */}
+                        <button
+                          className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 focus:outline-none"
+                          onClick={() => handleIncreaseQuantity(product.id)} // Increase quantity
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
+                  </div>
+                </SwiperSlide>
+              );
+            })
           ) : (
             <p>No products available for category {category}</p>
           )}

@@ -1,48 +1,61 @@
 import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Link } from 'react-router-dom';
 
-// Sample data with only images
-const productSections = [
-  { id: 1, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' },
-  { id: 2, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' },
-  { id: 3, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' },
-  { id: 4, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' }, 
-  { id: 5, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' },
-  { id: 6, image: 'https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75' },
+
+const categories = [
+  {
+    title: "Category A",
+    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
+    route: "/category/A/vertical",
+  },
+  {
+    title: "Category B",
+    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
+    route: "/category/B/vertical",
+  },
+  {
+    title: "Category C",
+    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
+    route: "/category/C/vertical",
+  },
+  {
+    title: "Category D",
+    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
+    route: "/category/D/vertical",
+  },
 ];
 
 const ProductCarousel = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   return (
-    <div className="p-4 block sm:hidden"> {/* Show only on mobile screens */}
-      <Slider {...settings}>
-        {productSections.map((section) => (
-          <div key={section.id} className="p-2">
-            {/* Card with internal padding removed */}
-            <div className="bg-white border border-light-red rounded-lg overflow-hidden shadow-md w-24 h-19">
-              <img src={section.image} alt={`Product ${section.id}`} className="w-full h-full object-cover" /> {/* Ensure image covers container */}
-            </div>
-          </div>
+    <div className="w-full py-2 block md:hidden"> {/* Show only on mobile/tablet */}
+      <Swiper
+        spaceBetween={5}
+        navigation={false}
+        breakpoints={{
+          320: { slidesPerView: 3, spaceBetween: 5 }, // 3 cards on mobile
+          640: { slidesPerView: 3, spaceBetween: 10 },
+          768: { slidesPerView: 3, spaceBetween: 15 },
+          1024: { slidesPerView: 4, spaceBetween: 15 },
+          1280: { slidesPerView: 4, spaceBetween: 15 },
+        }}
+        className="mySwiper"
+      >
+        {categories.map((category) => (
+          <SwiperSlide key={category.route} className="relative">
+            <Link to={category.route} className="block">
+              <div className="bg-white border border-light-red rounded-lg overflow-hidden shadow-md w-24 h-19"> {/* Adjusted card size */}
+                <img
+                  src={category.imageUrl}
+                  alt={category.title}
+                  className="w-full h-full object-cover" // Ensures the image fits within the card without cropping
+                />
+              </div>
+            </Link>
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </div>
   );
 };
