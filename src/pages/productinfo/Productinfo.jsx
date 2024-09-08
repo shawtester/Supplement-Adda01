@@ -5,7 +5,6 @@ import { addToCart } from '../../redux/cartSlice';
 import Layout from '../../components/layout/Layout';
 import { fireDB } from '../../firebase/FirebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-import ReactImageMagnify from 'react-image-magnify';
 import { AiOutlineTool, AiOutlineInfoCircle, AiOutlineFileText, AiOutlineTags } from 'react-icons/ai';
 import { GiFactory } from 'react-icons/gi';
 
@@ -55,27 +54,10 @@ function ProductInfo() {
         <div className="container px-5 py-32 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <div className="lg:w-1/2 w-full flex justify-center">
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: product.title,
-                    isFluidWidth: true,
-                    src: product.imageUrl
-                  },
-                  largeImage: {
-                    src: product.imageUrl,
-                    width: 1200,
-                    height: 1800
-                  },
-                  enlargedImageContainerStyle: {
-                    position: 'absolute',
-                    top: 0,
-                    left: '100%',
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'hidden'
-                  }
-                }}
+              <img
+                src={product.imageUrl}
+                alt={product.title}
+                className="object-cover w-full h-auto"
               />
             </div>
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
