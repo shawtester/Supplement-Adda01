@@ -5,6 +5,7 @@ import { FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { BsFillCloudSunFill } from 'react-icons/bs';
 import myContext from '../../context/data/myContext';
+import R1 from '../../assets/Images/R1.jpg';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -121,18 +122,31 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Logo */}
-            <div className="ml-4 flex lg:ml-0">
-              <Link to={'/'} className="flex">
-                <h1
-                  className="text-2xl font-bold text-black px-2 py-1 rounded"
-                  style={{ color: mode === 'dark' ? 'white' : '' }}
-                >
-                  SUPPLEMENT-ADDA
-                </h1>
-              </Link>
+            {/* Logo and Title */}
+            <div className="flex flex-grow items-center justify-center lg:justify-start">
+              <div className="flex items-center">
+                {/* Logo */}
+                <div className="w-auto flex justify-center">
+                  <img
+                    src={R1}
+                    alt="Logo"
+                    className="h-auto max-h-8 sm:max-h-10 md:max-h-12 lg:max-h-14 xl:max-h-16 w-auto max-w-full mx-2 object-contain"
+                  />
+                </div>
+                {/* Title */}
+                <Link to={'/'} className="flex items-center ml-4">
+                  <h1
+                    className="text-lg sm:text-xl md:text-2xl font-bold px-2 py-1 rounded whitespace-nowrap"
+                    style={{ color: mode === 'dark' ? 'white' : '' }}
+                  >
+                    <span className="text-black">SUPPLEMENT</span>
+                    <span className="text-red-600">-ADDA</span>
+                  </h1>
+                </Link>
+              </div>
             </div>
 
+            {/* Actions */}
             <div className="ml-auto flex items-center space-x-4 lg:space-x-6">
               {/* Desktop links */}
               <div className="hidden lg:flex items-center space-x-4">
