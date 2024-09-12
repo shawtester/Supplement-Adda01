@@ -18,7 +18,7 @@ export default function Checkout() {
             
             
           </div>
-          <p className="font-bold">$XX.XX</p>
+          <p className="font-bold"> ₹ XX.XX</p>
         </div>
 
 

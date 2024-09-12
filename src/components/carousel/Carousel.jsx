@@ -1,44 +1,51 @@
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import './Carousel.css'; // Custom CSS file
+import React, { useState, useEffect } from 'react';
+import './Carousel.css'; // Import the external CSS
+import A1 from '../../assets/Images/A1.jpg'; // Import local images
+import A2 from '../../assets/Images/A2.jpg';
+import A3 from '../../assets/Images/A3.jpg';
+
+const images = [A1, A2, A3]; // Array of imported images
 
 const Carousel = () => {
-  const images = [
-    'https://assets.hyugalife.com/banner/feature/JUNE-BAU-HPB-Web-1440x360_2__11.png?compress=true&format=webp&q=100&w=1216&h=304',
-    'https://assets.hyugalife.com/banner/feature/JUNE-BAU-HPB-Web-1440x360_2__11.png?compress=true&format=webp&q=100&w=1216&h=304',
-    'https://assets.hyugalife.com/banner/feature/JUNE-BAU-HPB-Web-1440x360_2__11.png?compress=true&format=webp&q=100&w=1216&h=304',
-  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  
-  
-    // Slick slider settings with dots enabled
-    const settings = {
-      dots: true, // Enable dots
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      pauseOnHover: true,
-      swipeToSlide: true,
-      arrows: false, // Disable arrows
-    };
-  
-    return (
-      <div className="carousel-container">
-        <Slider {...settings}>
-          {images.map((image, index) => (
-            <div key={index} className="carousel-slide">
-              <img src={image} alt={`Slide ${index + 1}`} className="carousel-image" />
-            </div>
-          ))}
-        </Slider>
-      </div>
-    );
+  // Function to go to the next slide
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
-  
-  export default Carousel;
-  
+
+  // Autoplay logic
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
+  return (
+    <div className="carousel-container">
+      <div
+        className="carousel-wrapper"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {images.map((image, index) => (
+          <div key={index} className="carousel-slide">
+            <img src={image} alt={`Slide ${index}`} />
+          </div>
+        ))}
+      </div>
+
+      {/* Dots */}
+      <div className="carousel-dots">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            className={`carousel-dot ${currentIndex === index ? 'active' : ''}`}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Carousel;

@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../components/layout/Layout'
 import HeroSection from '../../components/heroSection/HeroSection'
-import Filter from '../../components/filter/Filter'
+
 import ProductCart from '../../components/productCart/ProductCart'
 import Testimonial from '../../components/testimonial/Testimonial'
 import Track from '../../components/track/Track';
@@ -17,13 +17,14 @@ const Home = () => {
       
       <HeroSection/>
       
-      <ProductCart category="A" heading="Category A"/>
+      <ProductCart category="Whey" heading="Category Whey"/>
     
       <Testimonial/>
-      <ProductCart category="B" heading="Category B"/>
+      <ProductCart category="Isolated" heading="Category Isolated"/>
       <ShopByCategory/>
-      <ProductCart category="C" heading="Category C"/>
-      <ProductCart category="D" heading="Category D"/>
+      <ProductCart category="Gainers" heading="Category Gainers" />
+      <ProductCart category="Pre-Workout" heading="Category Pre-Workout"/>
+      <ProductCart category="Creatine" heading="Creatine"/>
 
       <Banner/>
       <Track/>

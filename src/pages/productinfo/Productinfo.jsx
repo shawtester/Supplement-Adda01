@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import Layout from '../../components/layout/Layout';
@@ -13,6 +13,7 @@ function ProductInfo() {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,27 +52,38 @@ function ProductInfo() {
   return (
     <Layout>
       <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-32 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <div className="lg:w-1/2 w-full flex justify-center">
+        <div className="container px-5 py-10 mx-auto">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate(-1)}
+            className="mb-4 flex items-center text-gray-700 hover:text-gray-900 focus:outline-none"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <span className="text-sm md:text-base">Back</span>
+          </button>
+          
+          <div className="lg:w-4/5 mx-auto flex flex-wrap flex-col md:flex-row">
+            <div className="md:w-1/2 w-full flex justify-center mb-4 md:mb-0">
               <img
                 src={product.imageUrl}
                 alt={product.title}
-                className="object-cover w-full h-auto"
+                className="object-cover w-full h-auto max-w-md rounded-lg"
               />
             </div>
-            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+            <div className="md:w-1/2 w-full md:pl-10">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 {product.brand}
               </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+              <h1 className="text-gray-900 text-2xl md:text-3xl title-font font-medium mb-1">
                 {product.title}
               </h1>
-              <p className="leading-relaxed border-b-2 mb-5 pb-5">
+              <p className="leading-relaxed border-b-2 mb-5 pb-5 text-sm md:text-base">
                 {product.description}
               </p>
               <div className="flex items-center mb-4">
-                <span className="title-font font-medium text-2xl text-gray-900">
+                <span className="title-font font-medium text-xl md:text-2xl text-gray-900">
                   ${product.price}
                 </span>
               </div>
@@ -86,31 +98,31 @@ function ProductInfo() {
           {/* Additional Sections with Icons */}
           <div className="mt-10">
             <div className="flex items-start mb-5">
-              <AiOutlineTool className="text-indigo-600 text-3xl mr-4" />
+              <AiOutlineTool className="text-indigo-600 text-2xl md:text-3xl mr-4" />
               <div>
                 <h3 className="text-lg font-medium text-gray-700">How to Use</h3>
-                <p className="mt-3 text-gray-500">{staticData.howToUse}</p>
+                <p className="mt-3 text-gray-500 text-sm md:text-base">{staticData.howToUse}</p>
               </div>
             </div>
             <div className="flex items-start mb-5">
-              <AiOutlineInfoCircle className="text-indigo-600 text-3xl mr-4" />
+              <AiOutlineInfoCircle className="text-indigo-600 text-2xl md:text-3xl mr-4" />
               <div>
                 <h3 className="text-lg font-medium text-gray-700">Product Information</h3>
-                <p className="mt-3 text-gray-500">{staticData.productInfo}</p>
+                <p className="mt-3 text-gray-500 text-sm md:text-base">{staticData.productInfo}</p>
               </div>
             </div>
             <div className="flex items-start mb-5">
-              <AiOutlineFileText className="text-indigo-600 text-3xl mr-4" />
+              <AiOutlineFileText className="text-indigo-600 text-2xl md:text-3xl mr-4" />
               <div>
                 <h3 className="text-lg font-medium text-gray-700">Additional Information</h3>
-                <p className="mt-3 text-gray-500">{staticData.additionalInfo}</p>
+                <p className="mt-3 text-gray-500 text-sm md:text-base">{staticData.additionalInfo}</p>
               </div>
             </div>
             <div className="flex items-start">
-              <GiFactory className="text-indigo-600 text-3xl mr-4" />
+              <GiFactory className="text-indigo-600 text-2xl md:text-3xl mr-4" />
               <div>
                 <h3 className="text-lg font-medium text-gray-700">Manufacturer Info</h3>
-                <p className="mt-3 text-gray-500">{staticData.manufacturerInfo}</p>
+                <p className="mt-3 text-gray-500 text-sm md:text-base">{staticData.manufacturerInfo}</p>
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-white sticky top-0 z-50">
+    <div className="w-full relative">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -94,7 +94,7 @@ export default function Navbar() {
         <p
           className="flex h-10 items-center justify-center bg-pink-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8"
           style={{
-            backgroundColor: mode === 'dark' ? 'rgb(62 64 66)' : '',
+            backgroundColor: mode === 'dark' ? 'red' : '#FF0008', // light red for light mode
             color: mode === 'dark' ? 'white' : '',
           }}
         >
@@ -128,7 +128,7 @@ export default function Navbar() {
                   className="text-2xl font-bold text-black px-2 py-1 rounded"
                   style={{ color: mode === 'dark' ? 'white' : '' }}
                 >
-                  E-Bharat
+                  SUPPLEMENT-ADDA
                 </h1>
               </Link>
             </div>

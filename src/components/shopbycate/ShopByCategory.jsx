@@ -1,36 +1,46 @@
 // components/categoryCarousel/CategoryCarousel.jsx
 import React from 'react';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import { Link } from 'react-router-dom';
+import CategoryImage1 from '../../assets/Images/Category1.jpg'; // Import local images
+import CategoryImage2 from '../../assets/Images/Category2.jpg';
+import CategoryImage3 from '../../assets/Images/Category3.jpg';
+import CategoryImage4 from '../../assets/Images/Category4.jpg';
 
 const categories = [
   {
-    title: "Category A",
-    imageUrl: "https://assets.hyugalife.com/catalog/product/f/o/fop_mk_2kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    route: "/category/A",
+    title: 'Whey',
+    imageUrl: CategoryImage1,
+    route: '/category/Whey',
   },
   {
-    title: "Category B",
-    imageUrl: "https://assets.hyugalife.com/catalog/product/f/o/fop_mk_2kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    route: "/category/B",
+    title: 'Creatine',
+    imageUrl: CategoryImage2,
+    route: '/category/Creatine',
   },
   {
-    title: "Category C",
-    imageUrl: "https://assets.hyugalife.com/catalog/product/f/o/fop_mk_2kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    route: "/category/C",
+    title: 'Gainers',
+    imageUrl: CategoryImage3,
+    route: '/category/Gainers',
   },
   {
-    title: "Category D",
-    imageUrl: "https://assets.hyugalife.com/catalog/product/f/o/fop_mk_2kg.jpg?compress=true&format=webp&q=75&w=300&h=300",
-    route: "/category/D",
+    title: 'Pre-Workout',
+    imageUrl: CategoryImage4,
+    route: '/category/Pre-Workout',
+  },
+
+  {
+    title: 'Isolated',
+    imageUrl: CategoryImage3,
+    route: '/category/Isolated',
   },
   // Add more categories as needed
 ];
 
-const CategoryCarousel = () => {
+const ShopByCategory = () => {
   return (
     <div className="w-full py-8">
       <h2 className="text-3xl font-bold mb-6 pl-9">Shop By Category</h2>
@@ -39,7 +49,7 @@ const CategoryCarousel = () => {
         navigation
         modules={[Navigation]}
         breakpoints={{
-          320: { slidesPerView: 3, spaceBetween: 10 }, // Show 3 items on small screens
+          320: { slidesPerView: 2, spaceBetween: 10 }, // Adjusted for better fit on small screens
           640: { slidesPerView: 3, spaceBetween: 15 },
           768: { slidesPerView: 3, spaceBetween: 20 },
           1024: { slidesPerView: 4, spaceBetween: 20 },
@@ -50,15 +60,14 @@ const CategoryCarousel = () => {
         {categories.map((category) => (
           <SwiperSlide
             key={category.route}
-            className="relative" // Add margin here if needed
+            className="relative"
           >
             <Link to={category.route} className="w-full h-full block">
-            <div className="flex-shrink-0 border-2 border-gray-300 rounded-lg overflow-hidden">
-              
+              <div className="flex-shrink-0 border-2 border-gray-300 rounded-lg overflow-hidden">
                 <img
                   src={category.imageUrl}
                   alt={category.title}
-                  className="w-full h-48 object-contain" // Use object-cover to maintain aspect ratio
+                  className="w-full h-48 object-fit:fill" // Corrected class name
                 />
               </div>
             </Link>
@@ -69,4 +78,4 @@ const CategoryCarousel = () => {
   );
 };
 
-export default CategoryCarousel;
+export default ShopByCategory;

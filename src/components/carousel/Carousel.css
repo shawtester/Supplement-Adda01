@@ -1,103 +1,114 @@
+/* Base Styles */
 .carousel-container {
   width: 100%;
-  max-width: 1200px; /* Adjust the overall max-width of the carousel */
+  overflow: hidden;
+  position: relative;
   margin: 0 auto;
 }
 
+.carousel-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
 .carousel-slide {
+  min-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  /* Control card dimensions */
-  background-color: #f5f5f5; /* Add background color if needed */
-  border-radius: 10px;
 }
 
-/* Image Styles */
-.carousel-image {
-  width: 100%; /* Set width to full parent container */
-  height: auto; /* Ensure aspect ratio is maintained */
-  object-fit: cover; /* Ensures image covers the container without distortion */
-  border-radius: 10px; /* Rounded corners */
-  max-height: 100%; /* Prevent the image from overflowing the card */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: conatin;
 }
 
-/* Mobile View */
+/* Responsive Styles */
+
+/* For small mobile screens */
 @media (max-width: 640px) {
-  .carousel-slide {
-    height: 200px; /* Adjust card height for small screens */
-    width: 100%; /* Full width for mobile screens */
+  .carousel-container {
+    height: 300px;
   }
 
-  .carousel-image {
-    height: 200px; /* Let the image fully occupy the card's height */
-    width: auto;
-    object-fit: fill; /* Maintain aspect ratio */
+  .carousel-slide {
+    height: 300px;
   }
 }
 
-/* Tablet View */
+/* For medium screens (tablets) */
 @media (min-width: 641px) and (max-width: 1024px) {
-  .carousel-slide {
-    height: 400px; /* Adjust card height for tablets */
-    width: 80%;
-    object-fit: fill; /* Adjust width for tablets */
+  .carousel-container {
+    height: 400px;
   }
 
-  .carousel-image {
-    height: 100%; /* Image should fully fit the card's height */
-    width: auto;
+  .carousel-slide {
+    height: 400px;
   }
 }
 
-/* Desktop View */
+/* For large screens (desktops) */
 @media (min-width: 1025px) {
-  .carousel-slide {
-    height: 500px; /* Adjust card height for desktop */
-    width: 70%; /* Adjust width for desktop */
+  .carousel-container {
+    height: 500px;
   }
 
-  .carousel-image {
-    height: 100%; /* Image should fit the card’s height */
-    width: auto;
+  .carousel-slide {
+    height: 500px;
   }
 }
 
-/* Large Desktop View */
+/* For extra-large screens */
 @media (min-width: 1280px) {
+  .carousel-container {
+    height: 400px;
+  }
+
   .carousel-slide {
-    height: 400px; /* Adjust card height for large screens */
-    width: 60%; /* Adjust width for large screens */
-  }
-
-  .carousel-image {
-    height: 100%; /* Fit image to card height */
-    width: auto;
-    object-fit: fill;
+    height: 400px;
   }
 }
 
+/* Arrow button styles */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+}
 
+.carousel-arrow.left {
+  left: 10px;
+}
 
+.carousel-arrow.right {
+  right: 10px;
+}
 
-
-/* Slick Dots Styles */
-.slick-dots {
-  bottom: 5px; /* Position the dots below the image */
+/* Dots */
+.carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
+  gap: 5px;
 }
 
-.slick-dots li {
-  margin: 0 5px; /* Adjust spacing between dots */
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: gray;
+  cursor: pointer;
 }
 
-.slick-dots li button:before {
-  font-size: 12px; /* Size of the dots */
-  color: #999; /* Inactive dot color */
-}
-
-.slick-dots li.slick-active button:before {
-  color: #000; /* Active dot color */
+.carousel-dot.active {
+  background-color: black;
 }

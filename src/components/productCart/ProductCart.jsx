@@ -1,11 +1,11 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, increaseQuantity, decreaseQuantity } from '../../redux/cartSlice';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ProductCard = lazy(() => import('./Speed'));
@@ -14,13 +14,10 @@ const ProductCart = ({ category }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);  // Track current slide index
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Access cart items from Redux store
-  const cartItems = useSelector((state) => state.cart.cartItems);
-
-  // Fetch products based on category
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -30,7 +27,7 @@ const ProductCart = ({ category }) => {
       const querySnapshot = await getDocs(productQuery);
       const allProducts = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data(),
+        ...doc.data()
       }));
       setProducts(allProducts);
     } catch (error) {
@@ -46,29 +43,71 @@ const ProductCart = ({ category }) => {
   }, [category]);
 
   const handleAddToCart = (product) => {
-    const existingItem = cartItems.find(item => item.id === product.id);
-
-    if (existingItem) {
-      dispatch(increaseQuantity(product.id)); // Increase quantity if item is already in the cart
-    } else {
-      const productToAdd = {
-        ...product,
-        quantity: 1,
-      };
-      dispatch(addToCart(productToAdd)); // Add new item to the cart
-    }
-  };
-
-  const handleIncreaseQuantity = (productId) => {
-    dispatch(increaseQuantity(productId));
-  };
-
-  const handleDecreaseQuantity = (productId) => {
-    dispatch(decreaseQuantity(productId));
+    const productToAdd = {
+      ...product,
+      quantity: 1,
+    };
+    dispatch(addToCart(productToAdd));
   };
 
   const handleProductClick = (id) => {
     navigate(`/product/${id}`);
+  };
+
+  // Custom arrow components with dynamic visibility
+  const NextArrow = ({ onClick }) => (
+    <div
+      className={`absolute top-1/2 right-4 transform -translate-y-1/2 z-10 cursor-pointer ${currentIndex === products.length - 4 ? 'hidden' : ''}`}
+      onClick={onClick}
+    >
+      <button className="bg-blue-500 p-2 rounded-full text-white">→</button>
+    </div>
+  );
+
+  const PrevArrow = ({ onClick }) => (
+    <div
+      className={`absolute top-1/2 left-4 transform -translate-y-1/2 z-10 cursor-pointer ${currentIndex === 0 ? 'hidden' : ''}`}
+      onClick={onClick}
+    >
+      <button className="bg-blue-500 p-2 rounded-full text-white">←</button>
+    </div>
+  );
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    afterChange: (current) => setCurrentIndex(current),  // Update currentIndex after slide change
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -85,64 +124,24 @@ const ProductCart = ({ category }) => {
           </div>
         </div>
       )}
-      {error && <p>{error}</p>}
-      
-      <Suspense fallback={<div>Loading...</div>}>
-        <Swiper
-          spaceBetween={20}
-          breakpoints={{
-            320: { slidesPerView: 1.5, spaceBetween: 10 },
-            640: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1024: { slidesPerView: 4, spaceBetween: 20 },
-            1280: { slidesPerView: 4, spaceBetween: 20 },
-          }}
-          className="mySwiper relative"
-        >
-          {products.length > 0 ? (
-            products.map((product, index) => {
-              const cartItem = cartItems.find(item => item.id === product.id); // Check if product is already in cart
+      {error && <p className="text-red-500">{error}</p>}
 
-              return (
-                <SwiperSlide key={index} className="relative">
-                  <div onClick={() => handleProductClick(product.id)}>
-                    <ProductCard product={product} />
-                  </div>
-                  
-                  <div className="mt-4 flex flex-col items-center space-y-2">
-                    {cartItem ? (
-                      <div className="flex items-center">
-                        <button
-                          className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none"
-                          onClick={() => handleDecreaseQuantity(product.id)} // Decrease quantity
-                        >
-                          -
-                        </button>
-                        <span className="mx-2">{cartItem.quantity}</span> {/* Show current quantity */}
-                        <button
-                          className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 focus:outline-none"
-                          onClick={() => handleIncreaseQuantity(product.id)} // Increase quantity
-                        >
-                          +
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => handleAddToCart(product)}
-                        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-                      >
-                        Add to Cart
-                      </button>
-                    )}
-                  </div>
-                </SwiperSlide>
-              );
-            })
-          ) : (
-            <p>No products available for category {category}</p>
-          )}
-        </Swiper>
-      </Suspense>
+      {!loading && products.length === 0 ? (
+        <p>No products available for category {category}</p>
+      ) : (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Slider {...settings}>
+            {products.map((product) => (
+              <div key={product.id} className="p-4">
+                <ProductCard
+                  product={product}
+                  onAddToCart={() => handleAddToCart(product)}
+                />
+              </div>
+            ))}
+          </Slider>
+        </Suspense>
+      )}
     </div>
   );
 };

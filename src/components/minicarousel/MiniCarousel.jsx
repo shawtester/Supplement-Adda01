@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 
 const categories = [
   {
-    title: "Category A",
+    title: "Category Whey ",
     imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
-    route: "/category/A/vertical",
+    route: "/category/Whey/vertical",
   },
   {
     title: "Category B",
