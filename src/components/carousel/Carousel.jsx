@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Carousel.css'; // Import the external CSS
-import A1 from '../../assets/Images/A1.jpg'; // Import local images
+import A1 from '../../assets/Images/A1.jpg';
 import A2 from '../../assets/Images/A2.jpg';
 import A3 from '../../assets/Images/A3.jpg';
+
 
 const images = [A1, A2, A3]; // Array of imported images
 

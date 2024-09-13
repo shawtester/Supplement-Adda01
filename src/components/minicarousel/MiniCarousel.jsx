@@ -2,30 +2,43 @@ import React from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Link } from 'react-router-dom';
-
+import CategoryImage1 from '../../assets/Images/Category1.jpg'; // Import local images
+import CategoryImage2 from '../../assets/Images/Category2.jpg';
+import CategoryImage3 from '../../assets/Images/Category3.jpg';
+import CategoryImage4 from '../../assets/Images/Category4.jpg';
+import CategoryImage5 from '../../assets/Images/Category5.jpg';
 
 const categories = [
   {
-    title: "Category Whey ",
-    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
-    route: "/category/Whey/vertical",
+    title: 'Whey',
+    imageUrl: CategoryImage1,
+    route: '/category/Whey',
   },
   {
-    title: "Category B",
-    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
-    route: "/category/B/vertical",
+    title: 'Creatine',
+    imageUrl: CategoryImage2,
+    route: '/category/Creatine',
   },
   {
-    title: "Category C",
-    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
-    route: "/category/C/vertical",
+    title: 'Gainers',
+    imageUrl: CategoryImage3,
+    route: '/category/Gainers',
   },
   {
-    title: "Category D",
-    imageUrl: "https://assets.hyugalife.com/banner/feature/Whey_protein_7_.png?compress=true&format=webp&q=75",
-    route: "/category/D/vertical",
+    title: 'Pre-Workout',
+    imageUrl: CategoryImage4,
+    route: '/category/Pre-Workout',
   },
+
+  {
+    title: 'Isolated',
+    imageUrl: CategoryImage5,
+    route: '/category/Isolated',
+  },
+  // Add more categories as needed
 ];
+
+
 
 const ProductCarousel = () => {
   return (

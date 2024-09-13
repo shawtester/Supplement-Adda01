@@ -9,6 +9,7 @@ import CategoryImage1 from '../../assets/Images/Category1.jpg'; // Import local 
 import CategoryImage2 from '../../assets/Images/Category2.jpg';
 import CategoryImage3 from '../../assets/Images/Category3.jpg';
 import CategoryImage4 from '../../assets/Images/Category4.jpg';
+import CategoryImage5 from '../../assets/Images/Category5.jpg';
 
 const categories = [
   {
@@ -34,7 +35,7 @@ const categories = [
 
   {
     title: 'Isolated',
-    imageUrl: CategoryImage3,
+    imageUrl: CategoryImage5,
     route: '/category/Isolated',
   },
   // Add more categories as needed
