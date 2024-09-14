@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,6 +17,7 @@ const ProductCart = ({ category }) => {
   const [currentIndex, setCurrentIndex] = useState(0);  // Track current slide index
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const sliderRef = useRef(null); // Create a ref for the slider instance
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -41,6 +42,12 @@ const ProductCart = ({ category }) => {
   useEffect(() => {
     fetchProducts();
   }, [category]);
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(0); // Move to the first slide after loading
+    }
+  }, [products]); // Ensure it runs when products are updated
 
   const handleAddToCart = (product) => {
     const productToAdd = {
@@ -130,7 +137,7 @@ const ProductCart = ({ category }) => {
         <p>No products available for category {category}</p>
       ) : (
         <Suspense fallback={<div>Loading...</div>}>
-          <Slider {...settings}>
+          <Slider {...settings} ref={sliderRef}> {/* Attach ref to Slider */}
             {products.map((product) => (
               <div key={product.id} className="p-4">
                 <ProductCard

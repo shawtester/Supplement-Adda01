@@ -18,6 +18,7 @@ function Cart() {
 
   // Sync cartItems with localStorage
   useEffect(() => {
+    console.log(cartItems);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 

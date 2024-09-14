@@ -1,0 +1,12 @@
+/* Ensure the Swiper container has a defined height */
+.swiper-container {
+    height: 500px; /* Adjust height as needed */
+  }
+  
+  /* Optional: Style the Swiper slides if needed */
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

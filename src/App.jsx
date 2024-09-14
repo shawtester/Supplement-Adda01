@@ -26,6 +26,9 @@ import CategoryPage from './pages/category/CategoryPage';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import  Search from './pages/search/Search';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 import VerticalCategoryPage from './pages/category/VerticalCategoryPage'
 

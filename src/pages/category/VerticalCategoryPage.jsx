@@ -1,52 +1,23 @@
-import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import SmallCarousel from './SmallCrousel';
-import Layout from '../../components/layout/Layout';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { addToCart, increaseQuantity, decreaseQuantity } from '../../redux/cartSlice'; // Import the decreaseQuantity action
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/cartSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const VerticalCategoryPage = () => {
   const { categoryName } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [slider, setSlider] = useState(null); // To store the slider instance
+  const [lastTap, setLastTap] = useState(0); // To store the last tap time
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Access cart items from Redux store
-  const cartItems = useSelector((state) => state.cart.cartItems);
-
-  // Handle Add to Cart button
-  const handleAddToCart = (product) => {
-    const existingItem = cartItems.find(item => item.id === product.id);
-
-    if (existingItem) {
-      // If product is already in the cart, increase quantity
-      dispatch(increaseQuantity(product.id));
-    } else {
-      // Add product with quantity 1 if it's not in the cart
-      dispatch(addToCart({ ...product, quantity: 1 }));
-    }
-  };
-
-  // Handle increasing the product quantity
-  const handleIncreaseQuantity = (productId) => {
-    dispatch(increaseQuantity(productId));
-  };
-
-  // Handle decreasing the product quantity
-  const handleDecreaseQuantity = (productId) => {
-    dispatch(decreaseQuantity(productId));
-  };
-
-  // Handle product card click to navigate to product detail page
-  const handleProductClick = (id) => {
-    navigate(`/product/${id}`);
-  };
-
-  // Fetch products based on categoryName
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -54,14 +25,10 @@ const VerticalCategoryPage = () => {
         ? query(collection(fireDB, "products"), where("category", "==", categoryName))
         : query(collection(fireDB, "products"));
       const querySnapshot = await getDocs(productQuery);
-      const allProducts = querySnapshot.docs.map(doc => {
-        const productData = doc.data();
-        // Convert Firestore timestamp to a serializable format
-        if (productData.time && productData.time.toDate) {
-          productData.time = productData.time.toDate().toISOString();
-        }
-        return { id: doc.id, ...productData };
-      });
+      const allProducts = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
       setProducts(allProducts);
     } catch (error) {
       console.error("Error fetching products:", error.message);
@@ -76,82 +43,111 @@ const VerticalCategoryPage = () => {
   }, [categoryName]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        navigate('/');
-      }
+    if (slider) {
+      slider.slickGoTo(0); // Move to the first slide after loading
+    }
+  }, [slider, products]);
+
+  const handleAddToCart = (product) => {
+    const productToAdd = {
+      ...product,
+      quantity: 1,
     };
+    dispatch(addToCart(productToAdd));
+  };
 
-    window.addEventListener('resize', handleResize);
-    handleResize();
+  const handleProductClick = (id) => {
+    navigate(`/product/${id}`);
+  };
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [navigate]);
+  // Function to handle double-tap gesture
+  const handleDoubleTap = (id) => {
+    const now = Date.now();
+    if (now - lastTap < 300) { // 300ms threshold for double-tap
+      handleProductClick(id);
+    }
+    setLastTap(now);
+  };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  const settings = {
+    dots: false,
+    infinite: true, // Enable infinite scrolling
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    vertical: true, // Enable vertical sliding
+    verticalSwiping: true, // Enable vertical swiping
+    nextArrow: null, // Remove next arrow
+    prevArrow: null, // Remove prev arrow
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   return (
-    <Layout>
-      <div className="w-full py-4 px-2">
-        <SmallCarousel />
-        <p className="mb-4">
-          <b>Why Protein</b><br />
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus officia porro sit minus dolore dolor, sunt possimus, sequi repellendus similique consectetur. Excepturi libero obcaecati repellendus, voluptatem eum a velit, dolor mollitia vitae, possimus necessitatibus quo commodi natus quam qui similique nesciunt temporibus ducimus. Recusandae provident explicabo laudantium rerum, magni aspernatur!
-        </p>
+    <div className="w-full py-8 relative overflow-hidden">
+      <h2 className="text-left text-2xl font-bold mb-4">
+        {categoryName ? `Products in ${categoryName}` : "All Products"}
+      </h2>
 
-        <h1 className="text-2xl font-bold mb-4">Products in {categoryName}</h1>
-        <div className="flex flex-col space-y-6">
-          {products.map((product) => {
-            const cartItem = cartItems.find(item => item.id === product.id); // Check if the item is in the cart
-
-            return (
-              <div key={product.id} className="bg-white border border-light-red rounded-lg overflow-hidden shadow-md flex items-center p-4">
-                <div className="flex-shrink-0" onClick={() => handleProductClick(product.id)}>
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-32 h-32 object-cover rounded-md"
-                  />
-                </div>
-                <div className="ml-4 flex-1">
-                  <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
-                  <p className="text-gray-600 mb-2">{product.description}</p>
-                  <p className="text-xl font-bold mb-4">{product.price}</p>
-
-                  {cartItem ? (
-                    <div className="flex items-center space-x-2">
-                      <button
-                        className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none"
-                        onClick={() => handleDecreaseQuantity(product.id)} // Decrease quantity
-                      >
-                        -
-                      </button>
-                      <span>{cartItem.quantity}</span> {/* Show current quantity */}
-                      <button
-                        className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 focus:outline-none"
-                        onClick={() => handleIncreaseQuantity(product.id)} // Increase quantity
-                      >
-                        +
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
-                      onClick={() => handleAddToCart(product)} // Add to cart if not already in cart
-                    >
-                      Add to Cart
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
+            <p className="mt-4 text-2xl font-extrabold text-gray-800">We Are Finding the Best Products for You</p>
+          </div>
         </div>
-      </div>
-    </Layout>
+      )}
+      {error && <p className="text-red-500">{error}</p>}
+
+      {!loading && products.length === 0 ? (
+        <p>No products available for category {categoryName}</p>
+      ) : (
+        <Slider {...settings} ref={(slider) => setSlider(slider)}>
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="p-4 bg-white rounded-lg shadow-lg cursor-pointer"
+              onClick={() => handleAddToCart(product)}
+            >
+              <img
+                src={product.imageUrl}
+                alt={product.title}
+                className="w-full h-64 object-cover rounded-md"
+                onTouchEnd={() => handleDoubleTap(product.id)} // Handle double-tap
+              />
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
+                <p className="text-gray-600 mt-2">${product.price}</p>
+              </div>
+            </div>
+          ))}
+        </Slider>
+      )}
+    </div>
   );
 };
 

@@ -1,0 +1,47 @@
+/* src/components/minicarousel/CarouselA.css */
+
+/* Mobile-only styles */
+.carousel-containerr {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 1rem 0;
+  box-sizing: border-box;
+  
+}
+
+.carousel-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.carousel-item {
+  flex: 0 0 calc(33.3333% - 1rem); /* Display 3 items at a time */
+  cursor: pointer;
+}
+
+.carousel-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  
+}
+
+.carousel-caption {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.carousel-caption h3 {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Hide carousel on larger screens */
+@media (min-width: 769px) {
+  .carousel-containerr {
+    display: none;
+  }
+}

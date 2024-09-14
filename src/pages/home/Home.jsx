@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '../../components/layout/Layout'
-import HeroSection from '../../components/heroSection/HeroSection'
+import Carousel from '../../components/carousel/Carousel';
 
 import ProductCart from '../../components/productCart/ProductCart'
 import Testimonial from '../../components/testimonial/Testimonial'
@@ -15,7 +15,7 @@ const Home = () => {
     <Layout>
       <MiniCarousel/>
       
-      <HeroSection/>
+      <Carousel/>
       
       <ProductCart category="Whey" heading="Category Whey"/>
     

@@ -1,9 +1,8 @@
 // components/categoryCarousel/CategoryCarousel.jsx
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { Navigation } from 'swiper';
+import 'swiper/swiper-bundle.min.css'; // Use the bundled CSS file
 import { Link } from 'react-router-dom';
 import CategoryImage1 from '../../assets/Images/Category1.jpg'; // Import local images
 import CategoryImage2 from '../../assets/Images/Category2.jpg';
@@ -18,25 +17,24 @@ const categories = [
     route: '/category/Whey',
   },
   {
-    title: 'Creatine',
+    title: 'Isolated',
     imageUrl: CategoryImage2,
-    route: '/category/Creatine',
+    route: '/category/Isolated',
   },
   {
-    title: 'Gainers',
+    title: 'Creatine',
     imageUrl: CategoryImage3,
-    route: '/category/Gainers',
+    route: '/category/Creatine',
   },
   {
     title: 'Pre-Workout',
     imageUrl: CategoryImage4,
     route: '/category/Pre-Workout',
   },
-
   {
-    title: 'Isolated',
+    title: 'Gainers',
     imageUrl: CategoryImage5,
-    route: '/category/Isolated',
+    route: '/category/Gainers',
   },
   // Add more categories as needed
 ];
@@ -50,7 +48,7 @@ const ShopByCategory = () => {
         navigation
         modules={[Navigation]}
         breakpoints={{
-          320: { slidesPerView: 2, spaceBetween: 10 }, // Adjusted for better fit on small screens
+          320: { slidesPerView: 2, spaceBetween: 10 },
           640: { slidesPerView: 3, spaceBetween: 15 },
           768: { slidesPerView: 3, spaceBetween: 20 },
           1024: { slidesPerView: 4, spaceBetween: 20 },
@@ -59,16 +57,13 @@ const ShopByCategory = () => {
         className="mySwiper"
       >
         {categories.map((category) => (
-          <SwiperSlide
-            key={category.route}
-            className="relative"
-          >
+          <SwiperSlide key={category.route} className="relative">
             <Link to={category.route} className="w-full h-full block">
               <div className="flex-shrink-0 border-2 border-gray-300 rounded-lg overflow-hidden">
                 <img
                   src={category.imageUrl}
                   alt={category.title}
-                  className="w-full h-48 object-fit:fill" // Corrected class name
+                  className="w-full h-48 object-cover" // Corrected class name
                 />
               </div>
             </Link>

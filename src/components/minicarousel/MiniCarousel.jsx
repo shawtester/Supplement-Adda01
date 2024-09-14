@@ -1,76 +1,67 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Link } from 'react-router-dom';
-import CategoryImage1 from '../../assets/Images/Category1.jpg'; // Import local images
-import CategoryImage2 from '../../assets/Images/Category2.jpg';
-import CategoryImage3 from '../../assets/Images/Category3.jpg';
-import CategoryImage4 from '../../assets/Images/Category4.jpg';
-import CategoryImage5 from '../../assets/Images/Category5.jpg';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './CarouselA.css'; // Import your custom styles here
 
-const categories = [
-  {
-    title: 'Whey',
-    imageUrl: CategoryImage1,
-    route: '/category/Whey',
-  },
-  {
-    title: 'Creatine',
-    imageUrl: CategoryImage2,
-    route: '/category/Creatine',
-  },
-  {
-    title: 'Gainers',
-    imageUrl: CategoryImage3,
-    route: '/category/Gainers',
-  },
-  {
-    title: 'Pre-Workout',
-    imageUrl: CategoryImage4,
-    route: '/category/Pre-Workout',
-  },
+// Import local images
+import Category1 from '../../assets/Images/Category1.jpg';  // Update the image paths accordingly
+import Category2 from '../../assets/Images/Category2.jpg';
+import Category3 from '../../assets/Images/Category3.jpg'; 
+import Category4 from '../../assets/Images/Category4.jpg'; 
+import Category5 from '../../assets/Images/Category5.jpg'; 
 
-  {
-    title: 'Isolated',
-    imageUrl: CategoryImage5,
-    route: '/category/Isolated',
-  },
-  // Add more categories as needed
-];
+const MiniCarousel = () => {
+  const navigate = useNavigate();
 
+  // Redirect to home page if screen width is larger than 768px (tablet/desktop)
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        navigate('/'); // Redirect to the homepage
+      }
+    };
 
+    // Check screen size on component mount
+    handleResize();
 
-const ProductCarousel = () => {
+    // Add resize event listener to handle window size change
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, [navigate]);
+
+  const categories = [
+    { id: 1, name: 'Whey', imageUrl:Category1},
+    { id: 2, name: 'Isolated', imageUrl:Category2},
+    { id: 3, name: 'Gainers', imageUrl:Category3},
+    { id: 4, name: 'Pre-Workout', imageUrl:Category4},
+    { id: 5, name: 'Creatine',imageUrl:Category5},
+  ];
+
+  const handleCardClick = (categoryName) => {
+    navigate(`/category/${categoryName}/vertical`);
+    console.log("Category Name:", categoryName);
+
+  };
+
   return (
-    <div className="w-full py-2 block md:hidden"> {/* Show only on mobile/tablet */}
-      <Swiper
-        spaceBetween={5}
-        navigation={false}
-        breakpoints={{
-          320: { slidesPerView: 3, spaceBetween: 5 }, // 3 cards on mobile
-          640: { slidesPerView: 3, spaceBetween: 10 },
-          768: { slidesPerView: 3, spaceBetween: 15 },
-          1024: { slidesPerView: 4, spaceBetween: 15 },
-          1280: { slidesPerView: 4, spaceBetween: 15 },
-        }}
-        className="mySwiper"
-      >
+    <div className="carousel-containerr">
+      <div className="carousel-wrapper">
         {categories.map((category) => (
-          <SwiperSlide key={category.route} className="relative">
-            <Link to={category.route} className="block">
-              <div className="bg-white border border-light-red rounded-lg overflow-hidden shadow-md w-24 h-19"> {/* Adjusted card size */}
-                <img
-                  src={category.imageUrl}
-                  alt={category.title}
-                  className="w-full h-full object-cover" // Ensures the image fits within the card without cropping
-                />
-              </div>
-            </Link>
-          </SwiperSlide>
+          <div
+            key={category.id}
+            className="carousel-item"
+            onClick={() => handleCardClick(category.name)}
+          >
+            <img src={category.imageUrl} alt={category.name} className="carousel-image" />
+            <div className="carousel-caption">
+              <h3>{category.name}</h3>
+            </div>
+          </div>
         ))}
-      </Swiper>
+      </div>
     </div>
   );
 };
 
-export default ProductCarousel;
+export default MiniCarousel;
