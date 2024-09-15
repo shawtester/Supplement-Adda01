@@ -1,154 +1,145 @@
-import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { fireDB } from "../../firebase/FirebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/cartSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.min.css'; // Import Swiper styles
+import SwiperCore, { Navigation, Pagination, Mousewheel } from 'swiper';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { fireDB } from '../../firebase/FirebaseConfig';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart } from '../../redux/cartSlice';
+import Layout from '../../components/layout/Layout';
+import SmallCrousel from './SmallCrousel'; // Unused import, remove if not needed
 
-const VerticalCategoryPage = () => {
+SwiperCore.use([Navigation, Pagination, Mousewheel]);
+
+const VerticalPriceDropsSlider = () => {
   const { categoryName } = useParams();
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [slider, setSlider] = useState(null); // To store the slider instance
-  const [lastTap, setLastTap] = useState(0); // To store the last tap time
+  const [selectedOptions, setSelectedOptions] = useState({});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const productQuery = categoryName
-        ? query(collection(fireDB, "products"), where("category", "==", categoryName))
-        : query(collection(fireDB, "products"));
-      const querySnapshot = await getDocs(productQuery);
-      const allProducts = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setProducts(allProducts);
-    } catch (error) {
-      console.error("Error fetching products:", error.message);
-      setError("Failed to load products");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
+    // Redirect if screen width is larger than 1024px
+    if (window.innerWidth > 1024) {
+      navigate('/'); // Redirect to homepage
+      return; // Exit early to avoid further rendering
+    }
+
+    const fetchProducts = async () => {
+      try {
+        const productsRef = collection(fireDB, 'products');
+        const q = categoryName ? query(productsRef, where('category', '==', categoryName)) : productsRef;
+        const querySnapshot = await getDocs(q);
+
+        const fetchedProducts = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error fetching products: ', error);
+      }
+    };
+
     fetchProducts();
-  }, [categoryName]);
-
-  useEffect(() => {
-    if (slider) {
-      slider.slickGoTo(0); // Move to the first slide after loading
-    }
-  }, [slider, products]);
+  }, [categoryName, navigate]); // Add navigate to the dependency array
 
   const handleAddToCart = (product) => {
-    const productToAdd = {
-      ...product,
-      quantity: 1,
-    };
-    dispatch(addToCart(productToAdd));
+    const selectedOption = selectedOptions[product.id] || { weight: null };
+    dispatch(addToCart({ ...product, ...selectedOption, quantity: 1 }));
   };
 
-  const handleProductClick = (id) => {
-    navigate(`/product/${id}`);
+  const handleIncreaseQuantity = (id) => {
+    dispatch(increaseQuantity(id));
   };
 
-  // Function to handle double-tap gesture
-  const handleDoubleTap = (id) => {
-    const now = Date.now();
-    if (now - lastTap < 300) { // 300ms threshold for double-tap
-      handleProductClick(id);
-    }
-    setLastTap(now);
+  const handleDecreaseQuantity = (id) => {
+    dispatch(decreaseQuantity(id));
   };
 
-  const settings = {
-    dots: false,
-    infinite: true, // Enable infinite scrolling
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    vertical: true, // Enable vertical sliding
-    verticalSwiping: true, // Enable vertical swiping
-    nextArrow: null, // Remove next arrow
-    prevArrow: null, // Remove prev arrow
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 4,
-        },
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const handleOptionChange = (id, type, value) => {
+    setSelectedOptions((prevOptions) => ({
+      ...prevOptions,
+      [id]: {
+        ...prevOptions[id],
+        [type]: value,
       },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+    }));
   };
 
   return (
-    <div className="w-full py-8 relative overflow-hidden">
-      <h2 className="text-left text-2xl font-bold mb-4">
-        {categoryName ? `Products in ${categoryName}` : "All Products"}
-      </h2>
-
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
-            <p className="mt-4 text-2xl font-extrabold text-gray-800">We Are Finding the Best Products for You</p>
-          </div>
-        </div>
-      )}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {!loading && products.length === 0 ? (
-        <p>No products available for category {categoryName}</p>
-      ) : (
-        <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="p-4 bg-white rounded-lg shadow-lg cursor-pointer"
-              onClick={() => handleAddToCart(product)}
-            >
-              <img
-                src={product.imageUrl}
-                alt={product.title}
-                className="w-full h-64 object-cover rounded-md"
-                onTouchEnd={() => handleDoubleTap(product.id)} // Handle double-tap
-              />
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
-                <p className="text-gray-600 mt-2">${product.price}</p>
-              </div>
-            </div>
-          ))}
-        </Slider>
-      )}
-    </div>
+    <Layout>
+      <div className="relative w-full h-[500px] overflow-hidden bg-white">
+        <Swiper
+          direction="vertical"
+          spaceBetween={20}
+          slidesPerView={1}
+          mousewheel={true}
+          grabCursor={true}
+          pagination={{ clickable: true }}
+          className="h-full"
+        >
+          {products.map((product) => {
+            const inCart = cartItems.find((item) => item.id === product.id);
+            return (
+              <SwiperSlide key={product.id} className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md">
+                <div className="w-full h-[40%]">
+                  <img
+                    src={product.imageUrl}
+                    alt={product.title}
+                    className="w-full h-full object-cover:contain rounded"
+                  />
+                </div>
+                <div className="w-full h-[60%] flex flex-col justify-between text-center p-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+                    <p className="text-gray-500 line-through">{product.price1}</p>
+                    <p className="text-lg font-bold text-red-500">{product.price2}</p>
+                    <p className="text-gray-700 mt-2 text-sm line-clamp-3">{product.description}</p>
+                  </div>
+                  <div className="flex items-center justify-center mt-4">
+                    {inCart ? (
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => handleDecreaseQuantity(product.id)}
+                          disabled={inCart.quantity <= 1}
+                          className="px-4 py-2 bg-red-500 text-white rounded-l-lg hover:bg-red-600"
+                        >
+                          -
+                        </button>
+                        <span className="px-4 py-2 bg-gray-200">{inCart.quantity}</span>
+                        <button
+                          onClick={() => handleIncreaseQuantity(product.id)}
+                          className="px-4 py-2 bg-green-500 text-white rounded-r-lg hover:bg-green-600"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
+    </Layout>
   );
 };
 
-export default VerticalCategoryPage;
+export default VerticalPriceDropsSlider;

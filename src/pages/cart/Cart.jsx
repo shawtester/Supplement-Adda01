@@ -1,9 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect,useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import Layout from '../../components/layout/Layout';
 import { removeFromCart, increaseQuantity, decreaseQuantity } from '../../redux/cartSlice';
+import Model from '../../components/model/Model';
+import { toast } from 'react-toastify';
+import { addDoc,collection } from 'firebase/firestore';
+import { fireDB } from '../../firebase/FirebaseConfig';
 
 function Cart() {
   const context = useContext(myContext);
@@ -21,6 +25,93 @@ function Cart() {
     console.log(cartItems);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
+
+  const [name, setName] = useState("")
+  const [address, setAddress] = useState("");
+  const [pincode, setPincode] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const buyNow = async () => {
+    // validation 
+    if (name === "" || address == "" || pincode == "" || phoneNumber == "") {
+      return toast.error("All fields are required", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    }
+    const addressInfo = {
+      name,
+      address,
+      pincode,
+      phoneNumber,
+      date: new Date().toLocaleString(
+        "en-US",
+        {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }
+      )
+    }
+
+    var options = {
+      key: "rzp_test_KA3xSs1LxajkYX",
+      key_secret: "pnTzN1FAYTp8NM4SajvsY2Xr",
+      amount: parseInt((totalPrice + shipping) * 100),
+      currency: "INR",
+      order_receipt: 'order_rcptid_' + name,
+      name: "E-Bharat",
+      description: "for testing purpose",
+      handler: function (response) {
+
+        // console.log(response)
+        console.log('Payment Successful Toast Triggered');
+        toast.success('Payment Successful')
+
+        const paymentId = response.razorpay_payment_id
+        // store in firebase 
+        const orderInfo = {
+          cartItems,
+          addressInfo,
+          date: new Date().toLocaleString(
+            "en-US",
+            {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            }
+          ),
+          email: JSON.parse(localStorage.getItem("user")).user.email,
+          userid: JSON.parse(localStorage.getItem("user")).user.uid,
+          paymentId
+        }
+
+        try {
+          const result = addDoc(collection(fireDB, "orders"), orderInfo)
+        } catch (error) {
+          console.log(error)
+        }
+      },
+
+      theme: {
+        color: "#3399cc"
+      }
+    };
+    var pay = new window.Razorpay(options);
+    pay.open();
+    console.log(pay)
+
+
+
+  }
+
+
+
 
   return (
     <Layout>
@@ -80,7 +171,17 @@ function Cart() {
                 <p className="text-sm">Including GST</p>
               </div>
             </div>
-            <Link to="/checkout" className="mt-6 block rounded-lg bg-blue-600 py-2 text-center text-white hover:bg-blue-700">Checkout</Link>
+            <Model
+              name={name}
+              address={address}
+              pincode={pincode}
+              phoneNumber={phoneNumber}
+              setName={setName}
+              setAddress={setAddress}
+              setPincode={setPincode}
+              setPhoneNumber={setPhoneNumber}
+              buyNow={buyNow}
+            />
           </div>
         </div>
       </div>
