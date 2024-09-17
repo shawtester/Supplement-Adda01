@@ -35,9 +35,11 @@ function ProductInfo() {
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addToCart({ ...product, quantity }));
+      const priceToUse = product.price1;
+      dispatch(addToCart({ ...product, price:priceToUse ,quantity }));
     }
   };
+  
 
   // Static data for additional sections
   const staticData = {
@@ -84,8 +86,13 @@ function ProductInfo() {
               </p>
               <div className="flex items-center mb-4">
                 <span className="title-font font-medium text-xl md:text-2xl text-gray-900">
-                  ${product.price}
+                  {product.price1}
                 </span>
+                {product.price2 && (
+                  <span className="text-red-500 ml-4 text-lg line-through">
+                    {product.price2}
+                  </span>
+                )}
               </div>
               <button
                 onClick={handleAddToCart}

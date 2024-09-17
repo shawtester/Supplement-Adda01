@@ -19,6 +19,9 @@ const ProductCart = ({ category }) => {
   const navigate = useNavigate();
   const sliderRef = useRef(null); // Create a ref for the slider instance
 
+
+
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -31,6 +34,8 @@ const ProductCart = ({ category }) => {
         ...doc.data()
       }));
       setProducts(allProducts);
+      
+      
     } catch (error) {
       console.error("Error fetching products:", error.message);
       setError("Failed to load products");
@@ -40,14 +45,13 @@ const ProductCart = ({ category }) => {
   };
 
   useEffect(() => {
+   
+    
     fetchProducts();
+    
   }, [category]);
 
-  useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current.slickGoTo(0); // Move to the first slide after loading
-    }
-  }, [products]); // Ensure it runs when products are updated
+
 
   const handleAddToCart = (product) => {
     const productToAdd = {

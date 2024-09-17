@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MyContext from './myContext';
 import { fireDB } from '../../firebase/FirebaseConfig';
-import { Timestamp, addDoc, collection, onSnapshot, orderBy, query, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, onSnapshot, orderBy, query, deleteDoc,getDocs, doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 function MyState(props) {
@@ -121,9 +121,50 @@ const addProduct = async () => {
       setLoading(false);
     }
   };
+  const [order, setOrder] = useState([]);
+
+  const getOrderData = async () => {
+    setLoading(true)
+    try {
+      const result = await getDocs(collection(fireDB, "orders"))
+      const ordersArray = [];
+      result.forEach((doc) => {
+        ordersArray.push(doc.data());
+        setLoading(false)
+      });
+      setOrder(ordersArray);
+      console.log(ordersArray)
+      setLoading(false);
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+  const [user, setUser] = useState([]);
+
+  const getUserData = async () => {
+    setLoading(true)
+    try {
+      const result = await getDocs(collection(fireDB, "users"))
+      const usersArray = [];
+      result.forEach((doc) => {
+        usersArray.push(doc.data());
+        setLoading(false)
+      });
+      setUser(usersArray);
+      console.log(usersArray)
+      setLoading(false);
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     getProductData();
+    getOrderData()
+    getUserData();
+
   }, []);
 
   // Edit product
@@ -172,7 +213,7 @@ const addProduct = async () => {
   return (
     <MyContext.Provider value={{
       mode, toggleMode, loading, setLoading,
-      products, setProducts, edithandle, addProduct, updateProduct, deleteProduct, product, getProductData, handleInputChange
+      products, setProducts, edithandle, addProduct, updateProduct, deleteProduct, product, getProductData, handleInputChange,order,user
     }}>
       {props.children}
     </MyContext.Provider>

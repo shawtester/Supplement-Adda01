@@ -10,3 +10,4 @@ module.exports = {
     require('@tailwindcss/line-clamp'),
   ],
 }
+/* Add this to your CSS or Tailwind config */

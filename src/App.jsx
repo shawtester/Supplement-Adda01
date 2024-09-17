@@ -21,6 +21,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './ScrollToTop';
 import ProductCart from './components/productCart/ProductCart';
+import OrderTracking0102 from './pages/admin/dashboard/OrderTracking0102'
 
 import CategoryPage from './pages/category/CategoryPage';
 
@@ -50,7 +51,7 @@ const App = () => {
         <Route path="/" element={<Home/>}/>
         <Route path="/order" element={
             <ProtectedRoutes>
-              <Order />
+              <Order/>
             </ProtectedRoutes>
           } />
         <Route path="/cart" element={<Cart/>} />
@@ -77,6 +78,7 @@ const App = () => {
 
 <Route path="/category/:categoryName/products" element={<ProductCart />} />
 <Route path='/search' element={<Search/>}/>
+<Route path='/ordertracking0102' element={<OrderTracking0102/>}/>
 
 
        
@@ -92,14 +94,16 @@ const App = () => {
 export default App
 
 
+
 export const ProtectedRoutes = ({ children }) => {
   if (localStorage.getItem('user')) {//currentUser
     return children
   }
   else {
-    return <Navigate to='/login' />
+    return <Navigate to='/login'/>
   }
 }
+
 
 
 

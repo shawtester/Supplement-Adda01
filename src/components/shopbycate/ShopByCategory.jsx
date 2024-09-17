@@ -63,7 +63,7 @@ const ShopByCategory = () => {
                 <img
                   src={category.imageUrl}
                   alt={category.title}
-                  className="w-full h-48 object-cover" // Corrected class name
+                  className="w-full h-48 object-cover:conatin" // Corrected class name
                 />
               </div>
             </Link>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect,useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import Layout from '../../components/layout/Layout';
 import { removeFromCart, increaseQuantity, decreaseQuantity } from '../../redux/cartSlice';
@@ -9,7 +9,9 @@ import { toast } from 'react-toastify';
 import { addDoc,collection } from 'firebase/firestore';
 import { fireDB } from '../../firebase/FirebaseConfig';
 
+
 function Cart() {
+  const Navigate = useNavigate();
   const context = useContext(myContext);
   const { mode } = context;
 
@@ -72,6 +74,7 @@ function Cart() {
         // console.log(response)
         console.log('Payment Successful Toast Triggered');
         toast.success('Payment Successful')
+        Navigate('/order');
 
         const paymentId = response.razorpay_payment_id
         // store in firebase 
@@ -88,7 +91,8 @@ function Cart() {
           ),
           email: JSON.parse(localStorage.getItem("user")).user.email,
           userid: JSON.parse(localStorage.getItem("user")).user.uid,
-          paymentId
+          paymentId,
+          status: "Processing",
         }
 
         try {

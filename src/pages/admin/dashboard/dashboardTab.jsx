@@ -6,19 +6,20 @@ import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { FaUser, FaCartPlus } from 'react-icons/fa';
 import { AiFillShopping, AiFillDelete } from 'react-icons/ai';
 
+
+
+
+
 function DashboardTab() {
     const context = useContext(myContext);
-    const { mode, product, deleteProduct, edithandle } = context;
+    const { mode, product, deleteProduct, edithandle,order,user } = context;
     const navigate = useNavigate();
 
     const addProduct = () => {
         navigate('/addproduct');
     };
 
-    const updateProductHandler = (item) => {
-        navigate('/updateproduct', { state: { product: item } });
-    };
-
+  
     return (
         <div className="container mx-auto">
             <Tabs defaultIndex={0} className="mb-10">
@@ -68,6 +69,7 @@ function DashboardTab() {
                                 <thead className="text-xs border text-black uppercase bg-gray-200" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '' }}>
                                     <tr>
                                         <th className="px-6 py-3">S.No</th>
+                                        
                                         <th className="px-6 py-3">Image</th>
                                         <th className="px-6 py-3">Title</th>
                                         <th className="px-6 py-3">Price 1</th>
@@ -79,6 +81,7 @@ function DashboardTab() {
                                         <th className="px-6 py-3">Flavour 2</th>
                                         <th className="px-6 py-3">Date</th>
                                         <th className="px-6 py-3">Action</th>
+                                     
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,12 +122,182 @@ function DashboardTab() {
                         </div>
                     </div>
                 </TabPanel>
-                <TabPanel>
+             
                     {/* Implement order details here */}
-                </TabPanel>
-                <TabPanel>
-                    {/* Implement user details here */}
-                </TabPanel>
+                    <TabPanel>
+                    <div className="relative overflow-x-auto mb-16">
+                                <h1 className=' text-center mb-5 text-3xl font-semibold underline' style={{ color: mode === 'dark' ? 'white' : '' }}>Order Details</h1>
+                               
+                                {order.map((allorder, index) => {
+                                    return (
+                                        <div className="overflow-x-scroll">
+                                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400" >
+                                            <thead className="text-xs text-black uppercase bg-gray-200 " style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
+                                                <tr>
+                                               
+
+                                                    <th scope="col" className="px-6 py-3">
+                                                        S.No.
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Payment Id
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Image
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Title
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Price
+                                                    </th>
+                                                  
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Name
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Address
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Pincode
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Phone Number
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Email
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Date
+                                                    </th>
+                                                   
+                                                    <th scope="col" className="px-6 py-3">
+    <Link 
+        to="/ordertracking0102" 
+        className="text-blue-500 hover:underline"
+    >
+        Status
+    </Link>
+</th>
+
+                                                  
+                                                   
+                                                </tr>
+                                            </thead>
+                                            {allorder.cartItems.map((item, index) => {
+                                                const {title,description,category,imageUrl,price} = item;
+                                                console.log(item)
+                                                return (
+                                                    <tbody>
+                                                        <tr className="bg-gray-50 border-b  dark:border-gray-700" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {index + 1}.
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.paymentId}
+                                                            </td>
+                                                            <th scope="row" className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                                                <img className='w-16' src={imageUrl} alt="img" />
+                                                            </th>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {title}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                ₹{price}
+                                                            </td>
+                                                         
+
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                               {allorder.addressInfo.name}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.addressInfo.address}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.addressInfo.pincode}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.addressInfo.phoneNumber}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.email}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                                {allorder.date}
+                                                            </td>
+                                                        
+                                 
+                                
+                                {/* Dropdown to Update Status */}
+                             
+
+
+                                                        </tr>
+
+                                                    </tbody>
+                                                )
+                                            })}
+                                        </table>
+                                        </div>
+                                    )
+                                })}
+                                </div>
+
+                            
+                        
+                  </TabPanel>
+                  <TabPanel>
+                            <div className="relative overflow-x-auto mb-10">
+                                <h1 className=' text-center mb-5 text-3xl font-semibold underline' style={{ color: mode === 'dark' ? 'white' : '' }}>User Details</h1>
+                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead className="text-xs text-black uppercase bg-gray-200 " style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3">
+                                                S.No
+                                            </th>
+
+                                            <th scope="col" className="px-6 py-3">
+                                                Name
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                Email
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                Uid
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                Date
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    {user.map((item, index) => {
+                                        const {name,uid,email,date} = item;
+                                        return (
+                                            <tbody>
+                                                <tr className="bg-gray-50 border-b  dark:border-gray-700" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
+                                                    <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                        {index + 1}.
+                                                    </td>
+                                                    <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                        {name}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                        {email}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                        {uid}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-black " style={{ color: mode === 'dark' ? 'white' : '' }}>
+                                                        {date}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        )
+                                    })}
+
+                                </table>
+                            </div>
+                        </TabPanel>
             </Tabs>
         </div>
     );

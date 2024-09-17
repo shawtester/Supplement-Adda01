@@ -18,15 +18,21 @@ const Home = () => {
       <Carousel/>
       
       <ProductCart category="Whey" heading="Category Whey"/>
+      <ProductCart category="Isolated" heading="Category Whey"/>
+      <ShopByCategory/>
+      <ProductCart category="Gainers" heading="Category Whey"/>
+      <ProductCart category="Pre-Workout" heading="Category Whey"/>
+      <ProductCart category="Creatine" heading="Category Whey"/>
+      
+        
+  
+      
+     
     
       <Testimonial/>
-      <ProductCart category="Isolated" heading="Category Isolated"/>
-      <ShopByCategory/>
-      <ProductCart category="Gainers" heading="Category Gainers" />
-      <ProductCart category="Pre-Workout" heading="Category Pre-Workout"/>
-      <ProductCart category="Creatine" heading="Creatine"/>
+   
+      
 
-      <Banner/>
       <Track/>
       <Footer/>
     </Layout>
