@@ -154,7 +154,7 @@ const ProductCard = ({ product }) => {
               onClick={(e) => handleWeightClick(product.weight1, e)}
               className={`cursor-pointer px-2 py-1 rounded-md ${selectedWeight === product.weight1 ? 'bg-blue-100 text-blue-500' : 'bg-gray-100 text-gray-700'} hover:bg-blue-200 transition duration-300`}
             >
-              {product.weight1} kg
+              {product.weight1} 
             </span>
           )}
           {product.weight2 && (
@@ -162,7 +162,7 @@ const ProductCard = ({ product }) => {
               onClick={(e) => handleWeightClick(product.weight2, e)}
               className={`cursor-pointer px-2 py-1 rounded-md ${selectedWeight === product.weight2 ? 'bg-blue-100 text-blue-500' : 'bg-gray-100 text-gray-700'} hover:bg-blue-200 transition duration-300`}
             >
-              {product.weight2} kg
+              {product.weight2} 
             </span>
           )}
         </div>

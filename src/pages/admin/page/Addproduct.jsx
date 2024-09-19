@@ -85,22 +85,24 @@ function AddProduct() {
                     className='bg-gray-600 mb-4 px-4 py-2 w-full rounded-lg text-white placeholder:text-gray-200 outline-none'
                     placeholder='Product price 2'
                 />
-                <input
-                    type="number"
-                    name='weight1'
-                    onChange={handleInputChange}
-                    value={products.weight1 || ""}
-                    className='bg-gray-600 mb-4 px-4 py-2 w-full rounded-lg text-white placeholder:text-gray-200 outline-none'
-                    placeholder='Weight 1'
-                />
-                <input
-                    type="number"
-                    name='weight2'
-                    onChange={handleInputChange}
-                    value={products.weight2 || ""}
-                    className='bg-gray-600 mb-4 px-4 py-2 w-full rounded-lg text-white placeholder:text-gray-200 outline-none'
-                    placeholder='Weight 2'
-                />
+                 <input
+  type="text" // Using text type to allow for number + unit
+  name="weight1"
+  onChange={handleInputChange}
+  value={products.weight1 || ""}
+  className="bg-gray-600 mb-4 px-4 py-2 w-full rounded-lg text-white placeholder:text-gray-200 outline-none"
+  placeholder="e.g. 100g, 1kg" // Give users an example of expected input
+/>
+
+               <input
+  type="text" // Using text type to allow for number + unit
+  name="weight2"
+  onChange={handleInputChange}
+  value={products.weight2 || ""}
+  className="bg-gray-600 mb-4 px-4 py-2 w-full rounded-lg text-white placeholder:text-gray-200 outline-none"
+  placeholder="e.g. 100g, 1kg" // Give users an example of expected input
+/>
+
 
                 {/* Flavour 1 Display */}
                 <input

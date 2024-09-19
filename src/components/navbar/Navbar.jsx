@@ -92,15 +92,16 @@ export default function Navbar() {
 
       {/* Desktop */}
       <header className="relative bg-white shadow">
-        <p
-          className="flex h-10 items-center justify-center bg-pink-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8"
-          style={{
-            backgroundColor: mode === 'dark' ? 'red' : '#FF0008', // light red for light mode
-            color: mode === 'dark' ? 'white' : '',
-          }}
-        >
-          Get free delivery on orders over ₹300
-        </p>
+      <p
+  className="flex h-10 items-center justify-center px-4 text-sm font-medium text-white sm:px-6 lg:px-8"
+  style={{
+    backgroundColor: mode === 'dark' ? '#8B0000' : '#DC2626', // dark red for dark mode, red-600 for light mode
+    color: mode === 'dark' ? 'white' : '',
+  }}
+>
+  Get free delivery on orders over ₹300
+</p>
+
 
         <nav
           aria-label="Top"

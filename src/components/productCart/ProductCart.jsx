@@ -123,7 +123,7 @@ const ProductCart = ({ category }) => {
 
   return (
     <div className="w-full py-8 relative">
-      <h2 className="text-left text-2xl font-bold mb-4">
+      <h2 className="text-left text-2xl font-bold mb-4 ml-12">
         {category ? `Products in ${category}` : "All Products"}
       </h2>
 

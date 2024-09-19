@@ -53,7 +53,6 @@ const Search = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Search for a product"
-          // Stylish search bar
           className="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-3/4 sm:w-96"
         />
       </div>
@@ -71,10 +70,18 @@ const Search = () => {
             />
           ))
         ) : searchInput.trim() === '' ? (
-          // Custom message with an emoji
-          <p className="text-center font-bold text-lg mt-4">
-            🔍 <span>Search here for the best products 💪</span>
-          </p>
+          // Show category products when there's no search input
+          <>
+            <p className="text-center font-bold text-lg mt-4">
+              🔍 <span>Search here for the best products 💪</span>
+            </p>
+            {/* Display default category products */}
+            <ProductCart category="Whey" heading="Category AA" />
+            <ProductCart category="Isolated" heading="Category B" />
+            <ProductCart category="Gainers" heading="Category C" />
+            <ProductCart category="Creatine" heading="Category D" />
+            <ProductCart category="Pre-Workout" heading="Category D" />
+          </>
         ) : (
           // Message when no matching products are found
           <p className="text-center font-bold text-lg mt-4">
@@ -82,10 +89,6 @@ const Search = () => {
           </p>
         )
       )}
-         <ProductCart category="A" heading="Category A" />
-          <ProductCart category="B" heading="Category B" />
-          <ProductCart category="C" heading="Category C" />
-          <ProductCart category="D" heading="Category D" />
     </Layout>
   );
 };

@@ -23,6 +23,7 @@ const Home = () => {
       <ProductCart category="Gainers" heading="Category Whey"/>
       <ProductCart category="Pre-Workout" heading="Category Whey"/>
       <ProductCart category="Creatine" heading="Category Whey"/>
+      <ProductCart category="Omega3" heading="Category Whey"/>
       
         
   

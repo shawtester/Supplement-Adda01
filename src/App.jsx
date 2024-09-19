@@ -24,6 +24,8 @@ import ProductCart from './components/productCart/ProductCart';
 import OrderTracking0102 from './pages/admin/dashboard/OrderTracking0102'
 
 import CategoryPage from './pages/category/CategoryPage';
+import About from './components/footer/About';
+import Contact from './components/footer/Contact';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import  Search from './pages/search/Search';
@@ -31,7 +33,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-import VerticalCategoryPage from './pages/category/VerticalCategoryPage'
+import VerticalCategoryPage from './pages/category/VerticalCategoryPage';
+import Testimonial from './components/testimonial/Testimonial';
 
 
 
@@ -61,6 +64,8 @@ const App = () => {
         <Route path="/*" element={<Nopage/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path="/testimonial" element={<Testimonial/>} />
+
         
         <Route path='/productinfo/:id' element={<Productinfo/>}/>
         <Route path='/model' element={<Model/>}/>
@@ -78,6 +83,8 @@ const App = () => {
 
 <Route path="/category/:categoryName/products" element={<ProductCart />} />
 <Route path='/search' element={<Search/>}/>
+<Route path='/about' element={<About/>}/>
+<Route path='/contact' element={<Contact/>}/>
 <Route path='/ordertracking0102' element={<OrderTracking0102/>}/>
 
 
