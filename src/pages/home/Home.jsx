@@ -9,6 +9,7 @@ import Footer from '../../components/footer/Footer';
 import Banner from '../../components/banner/Banner'
 import MiniCarousel from '../../components/minicarousel/MiniCarousel'
 import ShopByCategory from '../../components/shopbycate/ShopByCategory'
+import ShowImages from '../../components/showimages/ShowImages'
 
 const Home = () => {
   return (
@@ -22,6 +23,7 @@ const Home = () => {
       <ShopByCategory/>
       <ProductCart category="Gainers" heading="Category Whey"/>
       <ProductCart category="Pre-Workout" heading="Category Whey"/>
+      <ShowImages/>
       <ProductCart category="Creatine" heading="Category Whey"/>
       <ProductCart category="Omega3" heading="Category Whey"/>
       

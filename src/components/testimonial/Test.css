@@ -1,37 +1,40 @@
-/* Hover effect for large screens */
+/* Styles for the testimonial page */
 .testimonial-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .testimonial-card:hover {
-    transform: translateY(-10px); /* Lift the card */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
-  }
-  
-  /* Styles for large screens */
-  @media (min-width: 768px) {
-    .testimonial-container {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px); /* Lift the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Styles for large screens */
+@media (min-width: 768px) {
+  .testimonial-container {
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem; /* Adjust the gap between cards as needed */
-    }
-    .testimonial-card {
+  }
+  .testimonial-card {
       flex: 1 1 calc(33.333% - 1.5rem); /* 3 cards per row */
       margin-bottom: 1.5rem;
-    }
   }
-  
-  /* Styles for small screens */
-  @media (max-width: 767px) {
-    .testimonial-slider {
+}
+
+/* Styles for small screens */
+@media (max-width: 767px) {
+  .testimonial-slider {
       display: flex;
       overflow-x: auto;
       padding-bottom: 1rem; /* For scrollbar visibility */
-    }
-    .testimonial-card {
+  }
+  .testimonial-card {
       flex: 0 0 auto;
       width: 16rem; /* Adjust card width as needed */
       margin-right: 1rem; /* Space between cards */
-    }
   }
-  
+
+  .testimonial-page {
+      min-height: 50vh; /* Set a smaller min-height for mobile */
+  }
+}

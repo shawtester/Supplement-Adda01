@@ -95,7 +95,7 @@ export default function Navbar() {
       <p
   className="flex h-10 items-center justify-center px-4 text-sm font-medium text-white sm:px-6 lg:px-8"
   style={{
-    backgroundColor: mode === 'dark' ? '#8B0000' : '#DC2626', // dark red for dark mode, red-600 for light mode
+    backgroundColor: mode === 'dark' ? '#FF6347' : '#F87171',
     color: mode === 'dark' ? 'white' : '',
   }}
 >

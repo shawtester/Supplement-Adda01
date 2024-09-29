@@ -11,7 +11,7 @@ function MyState(props) {
     title: '',
     price1: '',
     price2: '',
-    imageUrl: '',
+    imageUrls: [],
     category: '',
     description: '',
     weight1: '',
@@ -39,63 +39,58 @@ function MyState(props) {
   };
 
   // Add Product
-// Add Product
-const addProduct = async () => {
-  // Check if all required fields are filled
-  if (
-    !products.title || !products.price1 ||
-    !products.weight1 || !products.imageUrl ||
-    !products.category || !products.description
-  ) {
-    return toast.error("All fields are required");
-  }
-
-  setLoading(true);
-
-  try {
-    // Add the product to Firestore
-    const productRef = collection(fireDB, 'products');
-    await addDoc(productRef, products);
-    toast.success("Product added successfully");
-
-    // Reset form fields
-    setProducts({
-      title: '',
-      price1: '',
-      price2: '',
-      imageUrl: '',
-      category: '',
-      description: '',
-      weight1: '',
-      weight2: '',
-      flavour1: '',   // Reset flavour fields
-      flavour2: '',   // Reset flavour fields
-      time: Timestamp.now(),
-      date: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      }),
-    });
-
-    // Optionally redirect after adding product
-    setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 800);
-
-  } catch (error) {
-    // If product fails to add
-    console.log(error);
-    toast.error("Failed to add product");
-  } finally {
-    setLoading(false);
-  }
-
-  // Call getProductData after successfully adding the product
-  await getProductData();
-};
-
+  const addProduct = async () => {
+    if (
+      !products.title || !products.price1 ||
+      !products.category || !products.description ||
+      products.imageUrls.length === 0 // Ensure at least one image is uploaded
+    ) {
+      return toast.error("All fields are required");
+    }
   
+    setLoading(true);
+  
+    try {
+      const productRef = collection(fireDB, 'products');
+      await addDoc(productRef, products);
+      toast.success("Product added successfully");
+  
+      // Reset form fields after success
+      setProducts({
+        title: '',
+        price1: '',
+        price2: '',
+        imageUrls: [],
+        category: '',
+        description: '',
+        weight1: '',
+        weight2: '',
+        flavour1: '',
+        flavour2: '',
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+      });
+  
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 800);
+  
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add product");
+    } finally {
+      setLoading(false);
+    }
+  
+    await getProductData();
+  };
+  
+  
+
     
   
 
@@ -220,4 +215,4 @@ const addProduct = async () => {
   );
 }
 
-export default MyState;
+export default MyState;  

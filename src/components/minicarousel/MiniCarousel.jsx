@@ -33,9 +33,9 @@ const MiniCarousel = () => {
   const categories = [
     { id: 1, name: 'Whey', imageUrl:Category1},
     { id: 2, name: 'Isolated', imageUrl:Category2},
-    { id: 3, name: 'Gainers', imageUrl:Category3},
-    { id: 4, name: 'Pre-Workout', imageUrl:Category4},
-    { id: 5, name: 'Creatine',imageUrl:Category5},
+    { id: 3, name: 'Gainers', imageUrl:Category5},
+    { id: 4, name: 'Creatine', imageUrl:Category4},
+    { id: 5, name: 'Pre-Workout',imageUrl:Category3},
   ];
 
   const handleCardClick = (categoryName) => {
@@ -55,7 +55,7 @@ const MiniCarousel = () => {
           >
             <img src={category.imageUrl} alt={category.name} className="carousel-image" />
             <div className="carousel-caption">
-              <h3>{category.name}</h3>
+         
             </div>
           </div>
         ))}

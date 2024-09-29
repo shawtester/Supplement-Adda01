@@ -4,12 +4,15 @@ import { useDispatch } from 'react-redux';
 import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart } from '../../redux/cartSlice';
 
 const ProductCard = ({ product }) => {
+  
+  
   const [quantity, setQuantity] = useState(1);
   const [selectedFlavour, setSelectedFlavour] = useState(product.flavour1);
   const [selectedWeight, setSelectedWeight] = useState(product.weight1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [timer, setTimer] = useState('');
   const [rating, setRating] = useState(4.5);
+  
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,6 +32,8 @@ const ProductCard = ({ product }) => {
     const updateTimer = () => {
       const now = new Date();
       const midnight = new Date(now);
+      
+      
       midnight.setHours(24, 0, 0, 0);
       const distance = midnight - now;
 
@@ -104,7 +109,7 @@ const ProductCard = ({ product }) => {
       {/* Image container: 45% of card height */}
       <div className="relative w-full h-[45%] cursor-pointer overflow-hidden flex items-center justify-center bg-gray-100">
         <img
-          src={product.imageUrl}
+          src={product.imageUrls['0']}
           alt={product.title}
           className="object-fit:fill w-full h-full p-4"
           onClick={handleImageClick}

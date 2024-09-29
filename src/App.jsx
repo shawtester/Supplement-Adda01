@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './ScrollToTop';
 import ProductCart from './components/productCart/ProductCart';
 import OrderTracking0102 from './pages/admin/dashboard/OrderTracking0102'
+import ShowImges from './components/showimages/ShowImages'
 
 import CategoryPage from './pages/category/CategoryPage';
 import About from './components/footer/About';
@@ -35,6 +36,8 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import VerticalCategoryPage from './pages/category/VerticalCategoryPage';
 import Testimonial from './components/testimonial/Testimonial';
+import Certificate from './components/certificate/Certificate';
+import Temp01 from './components/Temo01';
 
 
 
@@ -65,6 +68,7 @@ const App = () => {
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
         <Route path="/testimonial" element={<Testimonial/>} />
+        <Route path="/certificate" element={<Certificate/>}/>
 
         
         <Route path='/productinfo/:id' element={<Productinfo/>}/>
@@ -78,7 +82,9 @@ const App = () => {
 
 
 <Route path="/product/:id" element={<Productinfo />} />
+<Route path='/showimges' element={<ShowImges/>}/>
 <Route path="/category/:categoryName" element={<CategoryPage />} />
+<Route path='/temp01' element={<Temp01 />}/>
 <Route path="/category/:categoryName/vertical" element={<VerticalCategoryPage />} />
 
 <Route path="/category/:categoryName/products" element={<ProductCart />} />

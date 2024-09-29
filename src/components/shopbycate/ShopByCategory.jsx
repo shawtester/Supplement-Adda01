@@ -23,12 +23,12 @@ const categories = [
   },
   {
     title: 'Creatine',
-    imageUrl: CategoryImage3,
+    imageUrl: CategoryImage4,
     route: '/category/Creatine',
   },
   {
     title: 'Pre-Workout',
-    imageUrl: CategoryImage4,
+    imageUrl: CategoryImage3,
     route: '/category/Pre-Workout',
   },
   {
