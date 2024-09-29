@@ -4,12 +4,12 @@ import "swiper/swiper-bundle.min.css"; // Import Swiper styles
 
 // Import local images
 import img1 from '../../assets/Show/slide1.png';
-import img2 from '../../assets/show/slide2.png';
-import img3 from '../../assets/show/slide3.png';
-import img4 from '../../assets/show/slide4.png';
-import img5 from '../../assets/show/slide5.png';
-import img6 from '../../assets/show/slide6.png';
-import img7 from '../../assets/show/slide7.png'
+import img2 from '../../assets/Show/slide2.png';
+import img3 from '../../assets/Show/slide3.png';
+import img4 from '../../assets/Show/slide4.png';
+import img5 from '../../assets/Show/slide5.png';
+import img6 from '../../assets/Show/slide6.png';
+import img7 from '../../assets/Show/slide7.png';
 
 const CarouselComponent = () => {
   const slides = [
